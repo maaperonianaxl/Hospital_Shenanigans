@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospital Management</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="logo">Wellmeadows Hospital Management</div>
+
+  <div class="nav-links">
+    <a href="#">Dashboard</a>
+    <a href="#">Patients</a>
+    <a href="#">Doctors</a>
+    <a href="#">Wards</a>
+
+    <!-- DROPDOWN -->
+    <div class="dropdown">
+      <button class="dropbtn">Management ▾</button>
+      <div class="dropdown-content">
+        <a href="#">Staff</a>
+        <a href="#">Staff Allocation</a>
+        <a href="#">Beds</a>
+        <a href="#">Next of Kin</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <button class="dropbtn">Records ▾</button>
+      <div class="dropdown-content">
+        <a href="#">Appointments</a>
+        <a href="#">Waiting List</a>
+        <a href="#">Medications</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <button class="dropbtn">Inventory ▾</button>
+      <div class="dropdown-content">
+        <a href="#">Supplies</a>
+        <a href="#">Suppliers</a>
+      </div>
+    </div>
+
+    <a href="#">Reports</a>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+  <div class="header">
+    <div>
+      <h1>Patient Management</h1>
+      <p>Manage and view all patient records</p>
+    </div>
+<button class="add-btn" onclick="addPatient()">+ Admit Patient</button>
+ 
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-box">
+    <input type="text" id="patient-search" placeholder="Search patients by name or phone...">
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Patient ID</th>
+          <th>Name</th>
+          <th>Date of Birth</th>
+          <th>Gender</th>
+          <th>Phone</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody id="patientTable">
+        <!-- SAMPLE DATA -->
+        <tr>
+          <td>P-0001</td>
+          <td>John Doe</td>
+          <td>1985-03-15</td>
+          <td>Male</td>
+          <td>555-0101</td>
+          <td><span class="status active">Active</span></td>
+          <td class="actions">
+            <span class="view">👁</span>
+            <span class="edit">✏️</span>
+            <span class="delete">🗑</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+// SAMPLE DATA (fake database)
+let patients = [
+  {id:"P-0001", name:"John Doe", dob:"1985-03-15", gender:"Male", phone:"555-0101", status:"Active"},
+  {id:"P-0002", name:"Jane Smith", dob:"1990-07-22", gender:"Female", phone:"555-0102", status:"Active"},
+  {id:"P-0003", name:"Robert Brown", dob:"1978-11-30", gender:"Male", phone:"555-0103", status:"Discharged"}
+];
+
+// DISPLAY TABLE
+function renderTable(){
+  const table = document.getElementById("patientTable");
+  table.innerHTML = "";
+
+  patients.forEach((p, index) => {
+    table.innerHTML += `
+      <tr>
+        <td>${p.id}</td>
+        <td>${p.name}</td>
+        <td>${p.dob}</td>
+        <td>${p.gender}</td>
+        <td>${p.phone}</td>
+        <td><span class="status ${p.status === 'Active' ? 'active' : 'discharge'}">${p.status}</span></td>
+        <td class="actions">
+          <span onclick="viewPatient(${index})">👁</span>
+          <span onclick="editPatient(${index})">✏️</span>
+          <span onclick="deletePatient(${index})">🗑</span>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+// ADD PATIENT
+function addPatient(){
+  let name = prompt("Enter full name:");
+  if(!name) return;
+
+  let newPatient = {
+    id: "P-" + String(patients.length + 1).padStart(4, '0'),
+    name: name,
+    dob: prompt("Enter Date of Birth (YYYY-MM-DD):"),
+    gender: prompt("Gender:"),
+    phone: prompt("Phone:"),
+    status: "Active"
+  };
+
+  patients.push(newPatient);
+  renderTable();
+}
+
+// VIEW PATIENT
+function viewPatient(index){
+  let p = patients[index];
+  alert(
+    `Patient Info:\n\nName: ${p.name}\nDOB: ${p.dob}\nGender: ${p.gender}\nPhone: ${p.phone}\nStatus: ${p.status}`
+  );
+}
+
+// EDIT PATIENT
+function editPatient(index){
+  let p = patients[index];
+
+  p.name = prompt("Edit Name:", p.name);
+  p.phone = prompt("Edit Phone:", p.phone);
+
+  renderTable();
+}
+
+// DELETE PATIENT
+function deletePatient(index){
+  if(confirm("Are you sure you want to delete this patient?")){
+    patients.splice(index, 1);
+    renderTable();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('patient-search');
+
+    if (searchInput) {
+        searchInput.addEventListener('keyup', function() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const tableRows = document.querySelectorAll('#patientTable tr');
+
+            tableRows.forEach(row => {
+                // Column indexes:
+                // 1 = Name
+                // 4 = Phone
+                const nameCell = row.cells[1];
+                const phoneCell = row.cells[4];
+
+                if (nameCell && phoneCell) {
+                    const nameText = nameCell.textContent.toLowerCase();
+                    const phoneText = phoneCell.textContent.toLowerCase();
+
+                    // Match either name OR phone
+                    if (nameText.includes(searchTerm) || phoneText.includes(searchTerm)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                }
+            });
+        });
+    }
+});
+
+// NAVBAR CLICK (simulate page change)
+document.querySelectorAll(".nav-links a").forEach(link => {
+  link.addEventListener("click", function(e){
+    e.preventDefault();
+    alert("This will navigate to " + this.innerText + " page (UI only)");
+  });
+});
+
+// INITIAL LOAD
+renderTable();
+</script>
+
+
+
+
+</body>
+</html>
