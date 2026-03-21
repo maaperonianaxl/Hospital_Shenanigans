@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -13,109 +13,489 @@
   <div class="logo">Wellmeadows Hospital Management</div>
 
   <div class="nav-links">
-    <a href="#">Dashboard</a>
-    <a href="#">Patients</a>
-    <a href="#">Doctors</a>
-    <a href="#">Wards</a>
+    <a href="#" data-section="dashboardSection">Dashboard</a>
+    <a href="#" data-section="patientsSection">Patients</a>
+    <a href="#" data-section="doctorsSection">Doctors</a>
+    <a href="#" data-section="wardsSection">Wards</a>
 
     <!-- DROPDOWN -->
     <div class="dropdown">
-      <button class="dropbtn">Management ▾</button>
+      <button class="dropbtn">Management </button>
       <div class="dropdown-content">
-        <a href="#">Staff</a>
-        <a href="#">Staff Allocation</a>
-        <a href="#">Beds</a>
-        <a href="#">Next of Kin</a>
+        <a href="#" data-section="staffSection">Staff</a>
+        <a href="#" data-section="staffAllocationSection">Staff Allocation</a>
+        <a href="#" data-section="bedsSection">Beds</a>
+        <a href="#" data-section="nextOfKinSection">Next of Kin</a>
       </div>
     </div>
 
     <div class="dropdown">
-      <button class="dropbtn">Records ▾</button>
+      <button class="dropbtn">Records </button>
       <div class="dropdown-content">
-        <a href="#">Appointments</a>
-        <a href="#">Waiting List</a>
-        <a href="#">Medications</a>
+        <a href="#" data-section="appointmentsSection">Appointments</a>
+        <a href="#" data-section="waitingListSection">Waiting List</a>
+        <a href="#" data-section="medicationsSection">Medications</a>
       </div>
     </div>
 
     <div class="dropdown">
-      <button class="dropbtn">Inventory ▾</button>
+      <button class="dropbtn">Inventory </button>
       <div class="dropdown-content">
-        <a href="#">Supplies</a>
-        <a href="#">Suppliers</a>
+        <a href="#" data-section="suppliesSection">Supplies</a>
+        <a href="#" data-section="suppliersSection">Suppliers</a>
       </div>
     </div>
 
-    <a href="#">Reports</a>
+    <a href="#" data-section="reportsSection">Reports</a>
   </div>
 </div>
 
 <!-- CONTENT -->
-<div class="container">
 
-  <div class="header">
-    <div>
-      <h1>Patient Management</h1>
-      <p>Manage and view all patient records</p>
+<div id="dashboardSection" class="page-section">
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1>Dashboard</h1>
+        <p>Welcome to the Hospital Management Dashboard.</p>
+      </div>
     </div>
-<button class="add-btn" onclick="addPatient()">+ Admit Patient</button>
- 
-  </div>
 
-  <!-- SEARCH -->
+    <!-- DASHBOARD STATS CARDS -->
+    <div class="dashboard-cards">
+      <div class="card">
+        <h3>Patients</h3>
+        <p id="dashboardPatientsTotal">Total: 0</p>
+        <p id="dashboardPatientsActive">Active: 0</p>
+        <p id="dashboardPatientsDischarged">Discharged: 0</p>
+      </div>
+      <div class="card">
+        <h3>Doctors</h3>
+        <p id="dashboardDoctorsTotal">Total: 0</p>
+        <p id="dashboardDoctorsActive">Active: 0</p>
+        <p id="dashboardDoctorsInactive">Inactive: 0</p>
+      </div>
+      <div class="card">
+        <h3>Wards</h3>
+        <p id="dashboardWardsTotal">Total: 0</p>
+        <p id="dashboardWardsOccupied">Occupied: 0</p>
+        <p id="dashboardWardsFree">Free: 0</p>
+      </div>
+      <div class="card">
+        <h3>Beds</h3>
+        <p id="dashboardBedsTotal">Total: 0</p>
+        <p id="dashboardBedsOccupied">Occupied: 0</p>
+        <p id="dashboardBedsAvailable">Available: 0</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PATIENTS SECTION -->
+<div id="patientsSection" class="page-section">
+  <div class="container">
+    <!-- MODAL -->
+    <div id="patientModal" class="modal">
+      <div class="modal-content">
+        <h2>Admit Patient</h2>
+
+        <input type="text" id="p_name" placeholder="Full Name">
+        <input type="date" id="p_dob">
+        
+        <select id="p_gender">
+          <option>Male</option>
+          <option>Female</option>
+        </select>
+
+        <input type="text" id="p_phone" placeholder="Phone">
+
+        <div class="modal-buttons">
+          <button onclick="savePatient()">Save</button>
+          <button onclick="closeModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="header">
+      <div>
+        <h1>Patient Management</h1>
+        <p>Manage and view all patient records</p>
+      </div>
+      <button class="add-btn" onclick="addPatient()">+ Admit Patient</button>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-box">
+      <input type="text" id="patient-search" placeholder="Search patients by name or phone...">
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Patient ID</th>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="patientTable"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- DOCTORS SECTION -->
+<div id="doctorsSection" class="page-section container">
+  <h1>Doctors</h1>
   <div class="search-box">
-    <input type="text" id="patient-search" placeholder="Search patients by name or phone...">
+    <input type="text" id="doctor-search" placeholder="Search doctors by name or specialty...">
   </div>
-
-  <!-- TABLE -->
   <div class="table-container">
     <table>
       <thead>
         <tr>
-          <th>Patient ID</th>
+          <th>Doctor ID</th>
           <th>Name</th>
-          <th>Date of Birth</th>
-          <th>Gender</th>
+          <th>Specialty</th>
           <th>Phone</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
-
-      <tbody id="patientTable">
-        <!-- SAMPLE DATA -->
-        <tr>
-          <td>P-0001</td>
-          <td>John Doe</td>
-          <td>1985-03-15</td>
-          <td>Male</td>
-          <td>555-0101</td>
-          <td><span class="status active">Active</span></td>
-          <td class="actions">
-            <span class="view">👁</span>
-            <span class="edit">✏️</span>
-            <span class="delete">🗑</span>
-          </td>
-        </tr>
-      </tbody>
+      <tbody id="doctorsTable"></tbody>
     </table>
   </div>
-
 </div>
 
+<!-- WARDS SECTION -->
+<div id="wardsSection" class="page-section container">
+  <h1>Wards</h1>
+  <div class="search-box">
+    <input type="text" id="ward-search" placeholder="Search wards by name...">
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Ward ID</th>
+          <th>Name</th>
+          <th>Capacity</th>
+          <th>Occupied</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="wardsTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- STAFF SECTION -->
+<div id="staffSection" class="page-section container">
+  <h1>Staff</h1>
+  <div class="search-box">
+    <input type="text" id="staff-search" placeholder="Search staff by name or role...">
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Staff ID</th>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Phone</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="staffTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- STAFF ALLOCATION SECTION -->
+<div id="staffAllocationSection" class="page-section container">
+  <h1>Staff Allocation</h1>
+  <div class="search-box">
+    <input type="text" id="staffAllocation-search" placeholder="Search allocations by staff or ward...">
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Allocation ID</th>
+          <th>Staff Name</th>
+          <th>Ward</th>
+          <th>Shift</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="staffAllocationTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="bedsSection" class="page-section container">
+  <h1>Beds</h1>
+  <div class="search-box">
+    <input type="text" id="beds-search" placeholder="Search beds by ward or status...">
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Bed ID</th>
+          <th>Ward</th>
+          <th>Status</th>
+          <th>Patient</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="bedsTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="nextOfKinSection" class="page-section container">
+  <h1>Next of Kin</h1>
+  <div class="search-box">
+    <input type="text" id="nextOfKin-search" placeholder="Search by patient or kin name...">
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Kin ID</th>
+          <th>Patient Name</th>
+          <th>Kin Name</th>
+          <th>Relationship</th>
+          <th>Phone</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="nextOfKinTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="appointmentsSection" class="page-section container">
+  <h1>Appointments</h1>
+  <div class="search-box">
+    <input type="text" id="appointments-search" placeholder="Search appointments by patient or doctor...">
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Appointment ID</th>
+          <th>Patient</th>
+          <th>Doctor</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="appointmentsTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="waitingListSection" class="page-section container">
+  <h1>Waiting List</h1>
+  <div class="search-box">
+    <input type="text" id="waitingList-search" placeholder="Search waiting list by patient or priority...">
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Wait ID</th>
+          <th>Patient</th>
+          <th>Priority</th>
+          <th>Reason</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="waitingListTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="medicationsSection" class="page-section container">
+  <h1>Medications</h1>
+  <div class="search-box">
+    <input type="text" id="medications-search" placeholder="Search medications by name or patient...">
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Med ID</th>
+          <th>Name</th>
+          <th>Patient</th>
+          <th>Dosage</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="medicationsTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="suppliesSection" class="page-section container">
+  <h1>Supplies</h1>
+  <div class="search-box">
+    <input type="text" id="supplies-search" placeholder="Search supplies by name or category...">
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Supply ID</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Quantity</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="suppliesTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="suppliersSection" class="page-section container">
+  <h1>Suppliers</h1>
+  <div class="search-box">
+    <input type="text" id="suppliers-search" placeholder="Search suppliers by name or contact...">
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Supplier ID</th>
+          <th>Name</th>
+          <th>Contact</th>
+          <th>Phone</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="suppliersTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="reportsSection" class="page-section container">
+  <h1>Reports</h1>
+  <div class="search-box">
+    <input type="text" id="reports-search" placeholder="Search reports by title or date...">
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Report ID</th>
+          <th>Title</th>
+          <th>Date</th>
+          <th>Type</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="reportsTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- /* sample data and rendering functions */ -->
 <script>
-// SAMPLE DATA (fake database)
 let patients = [
   {id:"P-0001", name:"John Doe", dob:"1985-03-15", gender:"Male", phone:"555-0101", status:"Active"},
   {id:"P-0002", name:"Jane Smith", dob:"1990-07-22", gender:"Female", phone:"555-0102", status:"Active"},
   {id:"P-0003", name:"Robert Brown", dob:"1978-11-30", gender:"Male", phone:"555-0103", status:"Discharged"}
 ];
 
-// DISPLAY TABLE
+let doctors = [
+  {id:"D-001", name:"Dr. Alice Parker", specialty:"Cardiology", phone:"555-0201", status:"Active"},
+  {id:"D-002", name:"Dr. Mark Lee", specialty:"Neurology", phone:"555-0202", status:"Active"},
+  {id:"D-003", name:"Dr. Priya Nair", specialty:"Pediatrics", phone:"555-0203", status:"Inactive"}
+];
+
+let wards = [
+  {id:"W-101", name:"General Ward", capacity:30, occupied:22},
+  {id:"W-102", name:"ICU", capacity:10, occupied:8},
+  {id:"W-103", name:"Maternity", capacity:15, occupied:14}
+];
+
+let staff = [
+  {id:"S-001", name:"Nurse Emma", role:"Nurse", phone:"555-0301", status:"Active"},
+  {id:"S-002", name:"Dr. John Smith", role:"Doctor", phone:"555-0302", status:"Active"},
+  {id:"S-003", name:"Admin Lisa", role:"Administrator", phone:"555-0303", status:"Inactive"}
+];
+
+let staffAllocations = [
+  {id:"A-001", staffName:"Nurse Emma", ward:"General Ward", shift:"Day"},
+  {id:"A-002", staffName:"Dr. John Smith", ward:"ICU", shift:"Night"},
+  {id:"A-003", staffName:"Admin Lisa", ward:"Maternity", shift:"Day"}
+];
+
+let beds = [
+  {id:"B-101", ward:"General Ward", status:"Occupied", patient:"John Doe"},
+  {id:"B-102", ward:"ICU", status:"Available", patient:""},
+  {id:"B-103", ward:"Maternity", status:"Occupied", patient:"Jane Smith"}
+];
+
+let nextOfKin = [
+  {id:"K-001", patientName:"John Doe", kinName:"Mary Doe", relationship:"Wife", phone:"555-0401"},
+  {id:"K-002", patientName:"Jane Smith", kinName:"Bob Smith", relationship:"Husband", phone:"555-0402"},
+  {id:"K-003", patientName:"Robert Brown", kinName:"Anna Brown", relationship:"Sister", phone:"555-0403"}
+];
+
+let appointments = [
+  {id:"AP-001", patient:"John Doe", doctor:"Dr. Alice Parker", date:"2026-03-25", time:"10:00"},
+  {id:"AP-002", patient:"Jane Smith", doctor:"Dr. Mark Lee", date:"2026-03-26", time:"14:00"},
+  {id:"AP-003", patient:"Robert Brown", doctor:"Dr. Priya Nair", date:"2026-03-27", time:"09:00"}
+];
+
+let waitingList = [
+  {id:"WL-001", patient:"John Doe", priority:"High", reason:"Surgery"},
+  {id:"WL-002", patient:"Jane Smith", priority:"Medium", reason:"Checkup"},
+  {id:"WL-003", patient:"Robert Brown", priority:"Low", reason:"Consultation"}
+];
+
+let medications = [
+  {id:"M-001", name:"Aspirin", patient:"John Doe", dosage:"100mg"},
+  {id:"M-002", name:"Ibuprofen", patient:"Jane Smith", dosage:"200mg"},
+  {id:"M-003", name:"Paracetamol", patient:"Robert Brown", dosage:"500mg"}
+];
+
+let supplies = [
+  {id:"SU-001", name:"Bandages", category:"Wound Care", quantity:100},
+  {id:"SU-002", name:"Syringes", category:"Injection", quantity:50},
+  {id:"SU-003", name:"Gloves", category:"PPE", quantity:200}
+];
+
+let suppliers = [
+  {id:"SP-001", name:"MedSupply Co.", contact:"John Supplier", phone:"555-0601"},
+  {id:"SP-002", name:"HealthEquip Ltd.", contact:"Jane Equip", phone:"555-0602"},
+  {id:"SP-003", name:"PharmaCorp", contact:"Bob Pharma", phone:"555-0603"}
+];
+
+let reports = [
+  {id:"R-001", title:"Monthly Patient Report", date:"2026-03-01", type:"Patient Stats"},
+  {id:"R-002", title:"Staff Performance", date:"2026-03-05", type:"HR"},
+  {id:"R-003", title:"Inventory Summary", date:"2026-03-10", type:"Inventory"}
+];
+
+// rendering functions for each section
 function renderTable(){
   const table = document.getElementById("patientTable");
   table.innerHTML = "";
-
+// loop through patients and create table rows with actions
   patients.forEach((p, index) => {
     table.innerHTML += `
       <tr>
@@ -129,101 +509,898 @@ function renderTable(){
           <span onclick="viewPatient(${index})">👁</span>
           <span onclick="editPatient(${index})">✏️</span>
           <span onclick="deletePatient(${index})">🗑</span>
+          <span onclick="toggleStatus(${index})">🔄</span>
+        </td>
+      </tr>
+    `;
+  });
+  updateDashboard();
+}
+//  initial render
+function addPatient(){
+  document.getElementById("patientModal").style.display = "block";
+}
+// simple view function for patients
+function viewPatient(index){
+  let p = patients[index];
+  alert(`Patient Info:\n\nName: ${p.name}\nDOB: ${p.dob}\nGender: ${p.gender}\nPhone: ${p.phone}\nStatus: ${p.status}`);
+}
+// simple edit function for patients
+function editPatient(index){
+  let p = patients[index];
+  p.name = prompt("Edit Name:", p.name);
+  p.phone = prompt("Edit Phone:", p.phone);
+  renderTable();
+}
+// delete patient with confirmation
+function deletePatient(index){
+  if(confirm("Are you sure you want to delete this patient?")){
+    patients.splice(index,1);
+    renderTable();
+  }
+}
+// simple close modal function
+function closeModal(){
+  document.getElementById("patientModal").style.display = "none";
+}
+// simple save function for new patient
+function savePatient(){
+  const name = document.getElementById("p_name").value;
+  const dob = document.getElementById("p_dob").value;
+  const gender = document.getElementById("p_gender").value;
+  const phone = document.getElementById("p_phone").value;
+  if(!name || !dob || !phone){ alert("Please fill all required fields"); return; }
+  let newPatient = { id: "P-" + String(patients.length + 1).padStart(4,'0'), name, dob, gender, phone, status: "Active" };
+  patients.push(newPatient);
+  renderTable();
+  closeModal();
+  document.getElementById("p_name").value="";
+  document.getElementById("p_dob").value="";
+  document.getElementById("p_phone").value="";
+}
+// simple status toggle for patients
+function toggleStatus(index){
+  let p = patients[index];
+  p.status = p.status === "Active" ? "Discharged" : "Active";
+  renderTable();
+}
+// doctors table with view/edit/delete actions and status toggle
+function renderDoctorsTable(){
+  const table = document.getElementById("doctorsTable");
+  table.innerHTML = "";
+  doctors.forEach((d,index) => {
+    table.innerHTML += `
+      <tr>
+        <td>${d.id}</td>
+        <td>${d.name}</td>
+        <td>${d.specialty}</td>
+        <td>${d.phone}</td>
+        <td><span class="status ${d.status === 'Active' ? 'active' : 'discharge'}">${d.status}</span></td>
+        <td class="actions">
+          <span onclick="viewDoctor(${index})">👁</span>
+          <span onclick="editDoctor(${index})">✏️</span>
+          <span onclick="deleteDoctor(${index})">🗑</span>
+          <span onclick="toggleDoctorStatus(${index})">🔄</span>
+        </td>
+      </tr>
+    `;
+  });
+  updateDashboard();
+}
+// wards table with view/edit/delete actions
+function renderWardsTable(){
+  const table = document.getElementById("wardsTable");
+  table.innerHTML = "";
+  wards.forEach((w,index) => {
+    table.innerHTML += `
+      <tr>
+        <td>${w.id}</td>
+        <td>${w.name}</td>
+        <td>${w.capacity}</td>
+        <td>${w.occupied}</td>
+        <td class="actions">
+          <span onclick="viewWard(${index})">👁</span>
+          <span onclick="editWard(${index})">✏️</span>
+          <span onclick="deleteWard(${index})">🗑</span>
+        </td>
+      </tr>
+    `;
+  });
+  updateDashboard();
+}
+// staff table with view/edit/delete actions and status toggle
+function renderStaffTable(){
+  const table = document.getElementById("staffTable");
+  table.innerHTML = "";
+  staff.forEach((s,index) => {
+    table.innerHTML += `
+      <tr>
+        <td>${s.id}</td>
+        <td>${s.name}</td>
+        <td>${s.role}</td>
+        <td>${s.phone}</td>
+        <td><span class="status ${s.status === 'Active' ? 'active' : 'discharge'}">${s.status}</span></td>
+        <td class="actions">
+          <span onclick="viewStaff(${index})">👁</span>
+          <span onclick="editStaff(${index})">✏️</span>
+          <span onclick="deleteStaff(${index})">🗑</span>
+          <span onclick="toggleStaffStatus(${index})">🔄</span>
         </td>
       </tr>
     `;
   });
 }
-
-// ADD PATIENT
-function addPatient(){
-  let name = prompt("Enter full name:");
-  if(!name) return;
-
-  let newPatient = {
-    id: "P-" + String(patients.length + 1).padStart(4, '0'),
-    name: name,
-    dob: prompt("Enter Date of Birth (YYYY-MM-DD):"),
-    gender: prompt("Gender:"),
-    phone: prompt("Phone:"),
-    status: "Active"
-  };
-
-  patients.push(newPatient);
-  renderTable();
+// staff allocation table with view/edit/delete actions
+function renderStaffAllocationTable(){
+  const table = document.getElementById("staffAllocationTable");
+  table.innerHTML = "";
+  staffAllocations.forEach((a,index) => {
+    table.innerHTML += `
+      <tr>
+        <td>${a.id}</td>
+        <td>${a.staffName}</td>
+        <td>${a.ward}</td>
+        <td>${a.shift}</td>
+        <td class="actions">
+          <span onclick="viewStaffAllocation(${index})">👁</span>
+          <span onclick="editStaffAllocation(${index})">✏️</span>
+          <span onclick="deleteStaffAllocation(${index})">🗑</span>
+        </td>
+      </tr>
+    `;
+  });
+}
+// beds table with view/edit/delete actions and status toggle
+function renderBedsTable(){
+  const table = document.getElementById("bedsTable");
+  table.innerHTML = "";
+  beds.forEach((b,index) => {
+    table.innerHTML += `
+      <tr>
+        <td>${b.id}</td>
+        <td>${b.ward}</td>
+        <td><span class="status ${b.status === 'Available' ? 'active' : 'discharge'}">${b.status}</span></td>
+        <td>${b.patient || 'N/A'}</td>
+        <td class="actions">
+          <span onclick="viewBed(${index})">👁</span>
+          <span onclick="editBed(${index})">✏️</span>
+          <span onclick="deleteBed(${index})">🗑</span>
+          <span onclick="toggleBedStatus(${index})">🔄</span>
+        </td>
+      </tr>
+    `;
+  });
+  updateDashboard();
 }
 
-// VIEW PATIENT
-function viewPatient(index){
-  let p = patients[index];
-  alert(
-    `Patient Info:\n\nName: ${p.name}\nDOB: ${p.dob}\nGender: ${p.gender}\nPhone: ${p.phone}\nStatus: ${p.status}`
-  );
+function updateDashboard(){
+  // Patients stats
+  const totalPatients = patients.length;
+  const activePatients = patients.filter(p => p.status === 'Active').length;
+  const dischargedPatients = patients.filter(p => p.status === 'Discharged').length;
+  document.getElementById('dashboardPatientsTotal').textContent = `Total: ${totalPatients}`;
+  document.getElementById('dashboardPatientsActive').textContent = `Active: ${activePatients}`;
+  document.getElementById('dashboardPatientsDischarged').textContent = `Discharged: ${dischargedPatients}`;
+
+  // Doctors stats
+  const totalDoctors = doctors.length;
+  const activeDoctors = doctors.filter(d => d.status === 'Active').length;
+  const inactiveDoctors = doctors.filter(d => d.status === 'Inactive').length;
+  document.getElementById('dashboardDoctorsTotal').textContent = `Total: ${totalDoctors}`;
+  document.getElementById('dashboardDoctorsActive').textContent = `Active: ${activeDoctors}`;
+  document.getElementById('dashboardDoctorsInactive').textContent = `Inactive: ${inactiveDoctors}`;
+
+  // Wards stats
+  const totalWards = wards.length;
+  const occupiedWards = wards.reduce((sum,w)=>sum+Number(w.occupied||0),0);
+  const totalWardCapacity = wards.reduce((sum,w)=>sum+Number(w.capacity||0),0);
+  const freeWardBeds = Math.max(totalWardCapacity - occupiedWards,0);
+  document.getElementById('dashboardWardsTotal').textContent = `Total: ${totalWards}`;
+  document.getElementById('dashboardWardsOccupied').textContent = `Occupied Beds: ${occupiedWards}`;
+  document.getElementById('dashboardWardsFree').textContent = `Free Beds: ${freeWardBeds}`;
+
+  // Beds stats
+  const totalBeds = beds.length;
+  const occupiedBeds = beds.filter(b => b.status === 'Occupied').length;
+  const availableBeds = beds.filter(b => b.status === 'Available').length;
+  document.getElementById('dashboardBedsTotal').textContent = `Total: ${totalBeds}`;
+  document.getElementById('dashboardBedsOccupied').textContent = `Occupied: ${occupiedBeds}`;
+  document.getElementById('dashboardBedsAvailable').textContent = `Available: ${availableBeds}`;
 }
 
-// EDIT PATIENT
-function editPatient(index){
-  let p = patients[index];
-
-  p.name = prompt("Edit Name:", p.name);
-  p.phone = prompt("Edit Phone:", p.phone);
-
-  renderTable();
+// next of kin table with view/edit/delete actions
+function renderNextOfKinTable(){
+  const table = document.getElementById("nextOfKinTable");
+  table.innerHTML = "";
+  nextOfKin.forEach((k,index) => {
+    table.innerHTML += `
+      <tr>
+        <td>${k.id}</td>
+        <td>${k.patientName}</td>
+        <td>${k.kinName}</td>
+        <td>${k.relationship}</td>
+        <td>${k.phone}</td>
+        <td class="actions">
+          <span onclick="viewNextOfKin(${index})">👁</span>
+          <span onclick="editNextOfKin(${index})">✏️</span>
+          <span onclick="deleteNextOfKin(${index})">🗑</span>
+        </td>
+      </tr>
+    `;
+  });
 }
-
-// DELETE PATIENT
-function deletePatient(index){
-  if(confirm("Are you sure you want to delete this patient?")){
-    patients.splice(index, 1);
-    renderTable();
+// appointments table with view/edit/delete actions
+function renderAppointmentsTable(){
+  const table = document.getElementById("appointmentsTable");
+  table.innerHTML = "";
+  appointments.forEach((ap,index) => {
+    table.innerHTML += `
+      <tr>
+        <td>${ap.id}</td>
+        <td>${ap.patient}</td>
+        <td>${ap.doctor}</td>
+        <td>${ap.date}</td>
+        <td>${ap.time}</td>
+        <td class="actions">
+          <span onclick="viewAppointment(${index})">👁</span>
+          <span onclick="editAppointment(${index})">✏️</span>
+          <span onclick="deleteAppointment(${index})">🗑</span>
+        </td>
+      </tr>
+    `;
+  });
+}
+//  waiting list table with view/edit/delete actions
+function renderWaitingListTable(){
+  const table = document.getElementById("waitingListTable");
+  table.innerHTML = "";
+  waitingList.forEach((wl,index) => {
+    table.innerHTML += `
+      <tr>
+        <td>${wl.id}</td>
+        <td>${wl.patient}</td>
+        <td>${wl.priority}</td>
+        <td>${wl.reason}</td>
+        <td class="actions">
+          <span onclick="viewWaitingList(${index})">👁</span>
+          <span onclick="editWaitingList(${index})">✏️</span>
+          <span onclick="deleteWaitingList(${index})">🗑</span>
+        </td>
+      </tr>
+    `;
+  });
+}
+// medications table with view/edit/delete actions
+function renderMedicationsTable(){
+  const table = document.getElementById("medicationsTable");
+  table.innerHTML = "";
+  medications.forEach((m,index) => {
+    table.innerHTML += `
+      <tr>
+        <td>${m.id}</td>
+        <td>${m.name}</td>
+        <td>${m.patient}</td>
+        <td>${m.dosage}</td>
+        <td class="actions">
+          <span onclick="viewMedication(${index})">👁</span>
+          <span onclick="editMedication(${index})">✏️</span>
+          <span onclick="deleteMedication(${index})">🗑</span>
+        </td>
+      </tr>
+    `;
+  });
+}
+// supplies table with view/edit/delete actions
+function renderSuppliesTable(){
+  const table = document.getElementById("suppliesTable");
+  table.innerHTML = "";
+  supplies.forEach((su,index) => {
+    table.innerHTML += `
+      <tr>
+        <td>${su.id}</td>
+        <td>${su.name}</td>
+        <td>${su.category}</td>
+        <td>${su.quantity}</td>
+        <td class="actions">
+          <span onclick="viewSupply(${index})">👁</span>
+          <span onclick="editSupply(${index})">✏️</span>
+          <span onclick="deleteSupply(${index})">🗑</span>
+        </td>
+      </tr>
+    `;
+  });
+}
+// suppliers table with view/edit/delete actions
+function renderSuppliersTable(){
+  const table = document.getElementById("suppliersTable");
+  table.innerHTML = "";
+  suppliers.forEach((sp,index) => {
+    table.innerHTML += `
+      <tr>
+        <td>${sp.id}</td>
+        <td>${sp.name}</td>
+        <td>${sp.contact}</td>
+        <td>${sp.phone}</td>
+        <td class="actions">
+          <span onclick="viewSupplier(${index})">👁</span>
+          <span onclick="editSupplier(${index})">✏️</span>
+          <span onclick="deleteSupplier(${index})">🗑</span>
+        </td>
+      </tr>
+    `;
+  });
+}
+// reports table with view/edit/delete actions
+function renderReportsTable(){
+  const table = document.getElementById("reportsTable");
+  table.innerHTML = "";
+  reports.forEach((r,index) => {
+    table.innerHTML += `
+      <tr>
+        <td>${r.id}</td>
+        <td>${r.title}</td>
+        <td>${r.date}</td>
+        <td>${r.type}</td>
+        <td class="actions">
+          <span onclick="viewReport(${index})">👁</span>
+          <span onclick="editReport(${index})">✏️</span>
+          <span onclick="deleteReport(${index})">🗑</span>
+        </td>
+      </tr>
+    `;
+  });
+}
+// simple view function for doctors
+function viewDoctor(index){
+  let d = doctors[index];
+  alert(`Doctor Info:\n\nName: ${d.name}\nSpecialty: ${d.specialty}\nPhone: ${d.phone}\nStatus: ${d.status}`);
+}
+// simple edit function for doctors
+function editDoctor(index){
+  let d = doctors[index];
+  d.name = prompt("Edit Name:", d.name) || d.name;
+  d.phone = prompt("Edit Phone:", d.phone) || d.phone;
+  d.specialty = prompt("Edit Specialty:", d.specialty) || d.specialty;
+  renderDoctorsTable();
+}
+// delete doctor with confirmation
+function deleteDoctor(index){
+  if(confirm("Delete this doctor?")){
+    doctors.splice(index,1);
+    renderDoctorsTable();
+  }
+}
+// simple status toggle for doctors
+function toggleDoctorStatus(index){
+  let d = doctors[index];
+  d.status = d.status === "Active" ? "Inactive" : "Active";
+  renderDoctorsTable();
+}
+// simple view function for wards
+function viewWard(index){
+  let w = wards[index];
+  alert(`Ward Info:\n\nName: ${w.name}\nCapacity: ${w.capacity}\nOccupied: ${w.occupied}`);
+}
+// simple edit function for wards
+function editWard(index){
+  let w = wards[index];
+  w.name = prompt("Edit Name:", w.name) || w.name;
+  w.capacity = Number(prompt("Edit Capacity:", w.capacity) || w.capacity);
+  w.occupied = Number(prompt("Edit Occupied:", w.occupied) || w.occupied);
+  renderWardsTable();
+}
+// delete ward with confirmation
+function deleteWard(index){
+  if(confirm("Delete this ward?")){
+    wards.splice(index,1);
+    renderWardsTable();
+  }
+}
+// simple view function for staff
+function viewStaff(index){
+  let s = staff[index];
+  alert(`Staff Info:\n\nName: ${s.name}\nRole: ${s.role}\nPhone: ${s.phone}\nStatus: ${s.status}`);
+}
+// simple edit function for staff
+function editStaff(index){
+  let s = staff[index];
+  s.name = prompt("Edit Name:", s.name) || s.name;
+  s.role = prompt("Edit Role:", s.role) || s.role;
+  s.phone = prompt("Edit Phone:", s.phone) || s.phone;
+  renderStaffTable();
+}
+// delete staff with confirmation
+function deleteStaff(index){
+  if(confirm("Delete this staff?")){
+    staff.splice(index,1);
+    renderStaffTable();
+  }
+}
+// simple status toggle for staff
+function toggleStaffStatus(index){
+  let s = staff[index];
+  s.status = s.status === "Active" ? "Inactive" : "Active";
+  renderStaffTable();
+}
+// simple view function for staff allocation
+function viewStaffAllocation(index){
+  let a = staffAllocations[index];
+  alert(`Allocation Info:\n\nStaff: ${a.staffName}\nWard: ${a.ward}\nShift: ${a.shift}`);
+}
+// simple edit function for staff allocation
+function editStaffAllocation(index){
+  let a = staffAllocations[index];
+  a.staffName = prompt("Edit Staff Name:", a.staffName) || a.staffName;
+  a.ward = prompt("Edit Ward:", a.ward) || a.ward;
+  a.shift = prompt("Edit Shift:", a.shift) || a.shift;
+  renderStaffAllocationTable();
+}
+// delete staff allocation with confirmation
+function deleteStaffAllocation(index){
+  if(confirm("Delete this allocation?")){
+    staffAllocations.splice(index,1);
+    renderStaffAllocationTable();
+  }
+}
+// simple view function for beds
+function viewBed(index){
+  let b = beds[index];
+  alert(`Bed Info:\n\nID: ${b.id}\nWard: ${b.ward}\nStatus: ${b.status}\nPatient: ${b.patient || 'N/A'}`);
+}
+// simple edit function for beds
+function editBed(index){
+  let b = beds[index];
+  b.ward = prompt("Edit Ward:", b.ward) || b.ward;
+  b.status = prompt("Edit Status:", b.status) || b.status;
+  b.patient = prompt("Edit Patient:", b.patient) || b.patient;
+  renderBedsTable();
+}
+// delete bed with confirmation
+function deleteBed(index){
+  if(confirm("Delete this bed?")){
+    beds.splice(index,1);
+    renderBedsTable();
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('patient-search');
+// bed status toggle with confirmation if occupied
+function toggleBedStatus(index){
+  let b = beds[index];
+  if(b.status === "Occupied" && !confirm("Setting bed to Available will clear the patient assignment. Continue?")){
+    return;
+  }
+  b.status = b.status === "Occupied" ? "Available" : "Occupied";
+  if(b.status === "Available") b.patient = "";
+  renderBedsTable();
+}
 
-    if (searchInput) {
-        searchInput.addEventListener('keyup', function() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const tableRows = document.querySelectorAll('#patientTable tr');
+// simple view function for next of kin
+function viewNextOfKin(index){
+  let k = nextOfKin[index];
+  alert(`Next of Kin Info:\n\nPatient: ${k.patientName}\nKin: ${k.kinName}\nRelationship: ${k.relationship}\nPhone: ${k.phone}`);
+}
 
-            tableRows.forEach(row => {
-                // Column indexes:
-                // 1 = Name
-                // 4 = Phone
-                const nameCell = row.cells[1];
-                const phoneCell = row.cells[4];
+// simple edit function for next of kin
+function editNextOfKin(index){
+  let k = nextOfKin[index];
+  k.patientName = prompt("Edit Patient Name:", k.patientName) || k.patientName;
+  k.kinName = prompt("Edit Kin Name:", k.kinName) || k.kinName;
+  k.relationship = prompt("Edit Relationship:", k.relationship) || k.relationship;
+  k.phone = prompt("Edit Phone:", k.phone) || k.phone;
+  renderNextOfKinTable();
+}
 
-                if (nameCell && phoneCell) {
-                    const nameText = nameCell.textContent.toLowerCase();
-                    const phoneText = phoneCell.textContent.toLowerCase();
+// delete next of kin with confirmation
+function deleteNextOfKin(index){
+  if(confirm("Delete this next of kin?")){
+    nextOfKin.splice(index,1);
+    renderNextOfKinTable();
+  }
+}
 
-                    // Match either name OR phone
-                    if (nameText.includes(searchTerm) || phoneText.includes(searchTerm)) {
-                        row.style.display = "";
-                    } else {
-                        row.style.display = "none";
-                    }
-                }
-            });
-        });
-    }
-});
+// simple view function for appointments
+function viewAppointment(index){
+  let ap = appointments[index];
+  alert(`Appointment Info:\n\nPatient: ${ap.patient}\nDoctor: ${ap.doctor}\nDate: ${ap.date}\nTime: ${ap.time}`);
+}
 
-// NAVBAR CLICK (simulate page change)
-document.querySelectorAll(".nav-links a").forEach(link => {
-  link.addEventListener("click", function(e){
+// simple edit function for appointments
+function editAppointment(index){
+  let ap = appointments[index];
+  ap.patient = prompt("Edit Patient:", ap.patient) || ap.patient;
+  ap.doctor = prompt("Edit Doctor:", ap.doctor) || ap.doctor;
+  ap.date = prompt("Edit Date:", ap.date) || ap.date;
+  ap.time = prompt("Edit Time:", ap.time) || ap.time;
+  renderAppointmentsTable();
+}
+
+// delete appointment with confirmation
+function deleteAppointment(index){
+  if(confirm("Delete this appointment?")){
+    appointments.splice(index,1);
+    renderAppointmentsTable();
+  }
+}
+
+// simple view function for waiting list
+function viewWaitingList(index){
+  let wl = waitingList[index];
+  alert(`Waiting List Info:\n\nPatient: ${wl.patient}\nPriority: ${wl.priority}\nReason: ${wl.reason}`);
+}
+
+// simple edit function for waiting list
+function editWaitingList(index){
+  let wl = waitingList[index];
+  wl.patient = prompt("Edit Patient:", wl.patient) || wl.patient;
+  wl.priority = prompt("Edit Priority:", wl.priority) || wl.priority;
+  wl.reason = prompt("Edit Reason:", wl.reason) || wl.reason;
+  renderWaitingListTable();
+}
+
+// delete waiting list entry with confirmation
+function deleteWaitingList(index){
+  if(confirm("Delete this waiting list entry?")){
+    waitingList.splice(index,1);
+    renderWaitingListTable();
+  }
+}
+
+// simple view function for medications
+function viewMedication(index){
+  let m = medications[index];
+  alert(`Medication Info:\n\nName: ${m.name}\nPatient: ${m.patient}\nDosage: ${m.dosage}`);
+}
+
+// simple edit function for medications
+function editMedication(index){
+  let m = medications[index];
+  m.name = prompt("Edit Name:", m.name) || m.name;
+  m.patient = prompt("Edit Patient:", m.patient) || m.patient;
+  m.dosage = prompt("Edit Dosage:", m.dosage) || m.dosage;
+  renderMedicationsTable();
+}
+
+// delete medication with confirmation
+function deleteMedication(index){
+  if(confirm("Delete this medication?")){
+    medications.splice(index,1);
+    renderMedicationsTable();
+  }
+}
+
+// simple view function for supplies
+function viewSupply(index){
+  let su = supplies[index];
+  alert(`Supply Info:\n\nName: ${su.name}\nCategory: ${su.category}\nQuantity: ${su.quantity}`);
+}
+
+// simple edit function for supplies
+function editSupply(index){
+  let su = supplies[index];
+  su.name = prompt("Edit Name:", su.name) || su.name;
+  su.category = prompt("Edit Category:", su.category) || su.category;
+  su.quantity = Number(prompt("Edit Quantity:", su.quantity) || su.quantity);
+  renderSuppliesTable();
+}
+
+// delete supply with confirmation
+function deleteSupply(index){
+  if(confirm("Delete this supply?")){
+    supplies.splice(index,1);
+    renderSuppliesTable();
+  }
+}
+
+// simple view function for suppliers
+function viewSupplier(index){
+  let sp = suppliers[index];
+  alert(`Supplier Info:\n\nName: ${sp.name}\nContact: ${sp.contact}\nPhone: ${sp.phone}`);
+}
+
+// simple edit function for suppliers
+function editSupplier(index){
+  let sp = suppliers[index];
+  sp.name = prompt("Edit Name:", sp.name) || sp.name;
+  sp.contact = prompt("Edit Contact:", sp.contact) || sp.contact;
+  sp.phone = prompt("Edit Phone:", sp.phone) || sp.phone;
+  renderSuppliersTable();
+}
+
+// delete supplier with confirmation
+function deleteSupplier(index){
+  if(confirm("Delete this supplier?")){
+    suppliers.splice(index,1);
+    renderSuppliersTable();
+  }
+}
+
+// simple view function for reports 
+function viewReport(index){
+  let r = reports[index];
+  alert(`Report Info:\n\nTitle: ${r.title}\nDate: ${r.date}\nType: ${r.type}`);
+}
+
+// simple edit function for reports 
+function editReport(index){
+  let r = reports[index];
+  r.title = prompt("Edit Title:", r.title) || r.title;
+  r.date = prompt("Edit Date:", r.date) || r.date;
+  r.type = prompt("Edit Type:", r.type) || r.type;
+  renderReportsTable();
+}
+
+// delete report with confirmation
+function deleteReport(index){
+  if(confirm("Delete this report?")){
+    reports.splice(index,1);
+    renderReportsTable();
+  }
+}
+
+// section navigation function
+function showSection(sectionId){
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  const sec = document.getElementById(sectionId);
+  if(sec) sec.classList.add('active');
+}
+
+// Navigation click handlers
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', function(e){
     e.preventDefault();
-    alert("This will navigate to " + this.innerText + " page (UI only)");
+    const section = this.dataset.section;
+    if(section) showSection(section);
   });
 });
 
-// INITIAL LOAD
-renderTable();
+// Dropdown click handlers
+document.querySelectorAll('.dropbtn').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    const content = this.nextElementSibling;
+    // Close other dropdowns
+    document.querySelectorAll('.dropdown-content').forEach(c => {
+      if (c !== content) c.style.display = 'none';
+    });
+    // Toggle this one
+    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+  });
+});
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.dropdown')) {
+    document.querySelectorAll('.dropdown-content').forEach(content => {
+      content.style.display = 'none';
+    });
+  }
+});
+
+// Initial rendering and search setup
+window.addEventListener('DOMContentLoaded', () => {
+  renderTable();
+  renderDoctorsTable();
+  renderWardsTable();
+  renderStaffTable();
+  renderStaffAllocationTable();
+  renderBedsTable();
+  renderNextOfKinTable();
+  renderAppointmentsTable();
+  renderWaitingListTable();
+  renderMedicationsTable();
+  renderSuppliesTable();
+  renderSuppliersTable();
+  renderReportsTable();
+  showSection('dashboardSection');
+
+  // Search functions
+  const patientSearch = document.getElementById('patient-search');
+  if(patientSearch){
+    patientSearch.addEventListener('keyup', function(){
+      const searchTerm = patientSearch.value.toLowerCase();
+      document.querySelectorAll('#patientTable tr').forEach(row => {
+        const nameCell = row.cells[1];
+        const phoneCell = row.cells[4];
+        if(nameCell && phoneCell){
+          const nameText = nameCell.textContent.toLowerCase();
+          const phoneText = phoneCell.textContent.toLowerCase();
+          row.style.display = (nameText.includes(searchTerm) || phoneText.includes(searchTerm)) ? '' : 'none';
+        }
+      });
+    });
+  }
+
+  const doctorSearch = document.getElementById('doctor-search');
+  if(doctorSearch){
+    doctorSearch.addEventListener('keyup', function(){
+      const searchTerm = doctorSearch.value.toLowerCase();
+      document.querySelectorAll('#doctorsTable tr').forEach(row => {
+        const nameCell = row.cells[1];
+        const specialtyCell = row.cells[2];
+        if(nameCell && specialtyCell){
+          const nameText = nameCell.textContent.toLowerCase();
+          const specialtyText = specialtyCell.textContent.toLowerCase();
+          row.style.display = (nameText.includes(searchTerm) || specialtyText.includes(searchTerm)) ? '' : 'none';
+        }
+      });
+    });
+  }
+
+  const wardSearch = document.getElementById('ward-search');
+  if(wardSearch){
+    wardSearch.addEventListener('keyup', function(){
+      const searchTerm = wardSearch.value.toLowerCase();
+      document.querySelectorAll('#wardsTable tr').forEach(row => {
+        const nameCell = row.cells[1];
+        if(nameCell){
+          const nameText = nameCell.textContent.toLowerCase();
+          row.style.display = nameText.includes(searchTerm) ? '' : 'none';
+        }
+      });
+    });
+  }
+
+  const staffSearch = document.getElementById('staff-search');
+  if(staffSearch){
+    staffSearch.addEventListener('keyup', function(){
+      const searchTerm = staffSearch.value.toLowerCase();
+      document.querySelectorAll('#staffTable tr').forEach(row => {
+        const nameCell = row.cells[1];
+        const roleCell = row.cells[2];
+        if(nameCell && roleCell){
+          const nameText = nameCell.textContent.toLowerCase();
+          const roleText = roleCell.textContent.toLowerCase();
+          row.style.display = (nameText.includes(searchTerm) || roleText.includes(searchTerm)) ? '' : 'none';
+        }
+      });
+    });
+  }
+
+  const staffAllocationSearch = document.getElementById('staffAllocation-search');
+  if(staffAllocationSearch){
+    staffAllocationSearch.addEventListener('keyup', function(){
+      const searchTerm = staffAllocationSearch.value.toLowerCase();
+      document.querySelectorAll('#staffAllocationTable tr').forEach(row => {
+        const staffCell = row.cells[1];
+        const wardCell = row.cells[2];
+        if(staffCell && wardCell){
+          const staffText = staffCell.textContent.toLowerCase();
+          const wardText = wardCell.textContent.toLowerCase();
+          row.style.display = (staffText.includes(searchTerm) || wardText.includes(searchTerm)) ? '' : 'none';
+        }
+      });
+    });
+  }
+
+  const bedsSearch = document.getElementById('beds-search');
+  if(bedsSearch){
+    bedsSearch.addEventListener('keyup', function(){
+      const searchTerm = bedsSearch.value.toLowerCase();
+      document.querySelectorAll('#bedsTable tr').forEach(row => {
+        const wardCell = row.cells[1];
+        const statusCell = row.cells[2];
+        if(wardCell && statusCell){
+          const wardText = wardCell.textContent.toLowerCase();
+          const statusText = statusCell.textContent.toLowerCase();
+          row.style.display = (wardText.includes(searchTerm) || statusText.includes(searchTerm)) ? '' : 'none';
+        }
+      });
+    });
+  }
+
+  const nextOfKinSearch = document.getElementById('nextOfKin-search');
+  if(nextOfKinSearch){
+    nextOfKinSearch.addEventListener('keyup', function(){
+      const searchTerm = nextOfKinSearch.value.toLowerCase();
+      document.querySelectorAll('#nextOfKinTable tr').forEach(row => {
+        const patientCell = row.cells[1];
+        const kinCell = row.cells[2];
+        if(patientCell && kinCell){
+          const patientText = patientCell.textContent.toLowerCase();
+          const kinText = kinCell.textContent.toLowerCase();
+          row.style.display = (patientText.includes(searchTerm) || kinText.includes(searchTerm)) ? '' : 'none';
+        }
+      });
+    });
+  }
+
+  const appointmentsSearch = document.getElementById('appointments-search');
+  if(appointmentsSearch){
+    appointmentsSearch.addEventListener('keyup', function(){
+      const searchTerm = appointmentsSearch.value.toLowerCase();
+      document.querySelectorAll('#appointmentsTable tr').forEach(row => {
+        const patientCell = row.cells[1];
+        const doctorCell = row.cells[2];
+        if(patientCell && doctorCell){
+          const patientText = patientCell.textContent.toLowerCase();
+          const doctorText = doctorCell.textContent.toLowerCase();
+          row.style.display = (patientText.includes(searchTerm) || doctorText.includes(searchTerm)) ? '' : 'none';
+        }
+      });
+    });
+  }
+
+  const waitingListSearch = document.getElementById('waitingList-search');
+  if(waitingListSearch){
+    waitingListSearch.addEventListener('keyup', function(){
+      const searchTerm = waitingListSearch.value.toLowerCase();
+      document.querySelectorAll('#waitingListTable tr').forEach(row => {
+        const patientCell = row.cells[1];
+        const priorityCell = row.cells[2];
+        if(patientCell && priorityCell){
+          const patientText = patientCell.textContent.toLowerCase();
+          const priorityText = priorityCell.textContent.toLowerCase();
+          row.style.display = (patientText.includes(searchTerm) || priorityText.includes(searchTerm)) ? '' : 'none';
+        }
+      });
+    });
+  }
+
+  const medicationsSearch = document.getElementById('medications-search');
+  if(medicationsSearch){
+    medicationsSearch.addEventListener('keyup', function(){
+      const searchTerm = medicationsSearch.value.toLowerCase();
+      document.querySelectorAll('#medicationsTable tr').forEach(row => {
+        const nameCell = row.cells[1];
+        const patientCell = row.cells[2];
+        if(nameCell && patientCell){
+          const nameText = nameCell.textContent.toLowerCase();
+          const patientText = patientCell.textContent.toLowerCase();
+          row.style.display = (nameText.includes(searchTerm) || patientText.includes(searchTerm)) ? '' : 'none';
+        }
+      });
+    });
+  }
+
+  const suppliesSearch = document.getElementById('supplies-search');
+  if(suppliesSearch){
+    suppliesSearch.addEventListener('keyup', function(){
+      const searchTerm = suppliesSearch.value.toLowerCase();
+      document.querySelectorAll('#suppliesTable tr').forEach(row => {
+        const nameCell = row.cells[1];
+        const categoryCell = row.cells[2];
+        if(nameCell && categoryCell){
+          const nameText = nameCell.textContent.toLowerCase();
+          const categoryText = categoryCell.textContent.toLowerCase();
+          row.style.display = (nameText.includes(searchTerm) || categoryText.includes(searchTerm)) ? '' : 'none';
+        }
+      });
+    });
+  }
+
+  const suppliersSearch = document.getElementById('suppliers-search');
+  if(suppliersSearch){
+    suppliersSearch.addEventListener('keyup', function(){
+      const searchTerm = suppliersSearch.value.toLowerCase();
+      document.querySelectorAll('#suppliersTable tr').forEach(row => {
+        const nameCell = row.cells[1];
+        const contactCell = row.cells[2];
+        if(nameCell && contactCell){
+          const nameText = nameCell.textContent.toLowerCase();
+          const contactText = contactCell.textContent.toLowerCase();
+          row.style.display = (nameText.includes(searchTerm) || contactText.includes(searchTerm)) ? '' : 'none';
+        }
+      });
+    });
+  }
+
+  const reportsSearch = document.getElementById('reports-search');
+  if(reportsSearch){
+    reportsSearch.addEventListener('keyup', function(){
+      const searchTerm = reportsSearch.value.toLowerCase();
+      document.querySelectorAll('#reportsTable tr').forEach(row => {
+        const titleCell = row.cells[1];
+        const typeCell = row.cells[3];
+        if(titleCell && typeCell){
+          const titleText = titleCell.textContent.toLowerCase();
+          const typeText = typeCell.textContent.toLowerCase();
+          row.style.display = (titleText.includes(searchTerm) || typeText.includes(searchTerm)) ? '' : 'none';
+        }
+      });
+    });
+  }
+});
 </script>
-
-
-
 
 </body>
 </html>
