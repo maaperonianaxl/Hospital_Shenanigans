@@ -241,6 +241,7 @@
   </div>
 </div>
 
+<!-- BEDS SECTION -->
 <div id="bedsSection" class="page-section container">
   <h1>Beds</h1>
   <div class="search-box">
@@ -262,6 +263,7 @@
   </div>
 </div>
 
+<!-- NEXT OF KIN SECTION -->
 <div id="nextOfKinSection" class="page-section container">
   <h1>Next of Kin</h1>
   <div class="search-box">
@@ -284,6 +286,7 @@
   </div>
 </div>
 
+<!-- APPOINTMENTS SECTION -->
 <div id="appointmentsSection" class="page-section container">
   <h1>Appointments</h1>
   <div class="search-box">
@@ -306,6 +309,7 @@
   </div>
 </div>
 
+<!-- WAITING LIST SECTION -->
 <div id="waitingListSection" class="page-section container">
   <h1>Waiting List</h1>
   <div class="search-box">
@@ -327,6 +331,7 @@
   </div>
 </div>
 
+<!-- MEDICATIONS SECTION -->
 <div id="medicationsSection" class="page-section container">
   <h1>Medications</h1>
   <div class="search-box">
@@ -348,6 +353,7 @@
   </div>
 </div>
 
+<!-- SUPPLIES SECTION -->
 <div id="suppliesSection" class="page-section container">
   <h1>Supplies</h1>
   <div class="search-box">
@@ -369,6 +375,7 @@
   </div>
 </div>
 
+<!-- SUPPLIERS SECTION -->
 <div id="suppliersSection" class="page-section container">
   <h1>Suppliers</h1>
   <div class="search-box">
@@ -390,6 +397,7 @@
   </div>
 </div>
 
+<!-- REPORTS SECTION -->
 <div id="reportsSection" class="page-section container">
   <h1>Reports</h1>
   <div class="search-box">
@@ -495,6 +503,7 @@ let reports = [
 function renderTable(){
   const table = document.getElementById("patientTable");
   table.innerHTML = "";
+
 // loop through patients and create table rows with actions
   patients.forEach((p, index) => {
     table.innerHTML += `
